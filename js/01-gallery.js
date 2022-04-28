@@ -1,14 +1,42 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
+const gallery = document.querySelector(".gallery");
 
+const img = creategalleryItems(galleryItems);
+gallery.addEventListener("click", container);
+gallery.insertAdjacentHTML("beforeend", img);
+
+
+function creategalleryItems(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `
+  <div class="gallery__item">
+  <a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</div>
+    `;
+    })
+    .join("");
+}
+
+function container(e) {
+  e.preventDefault();
+
+  if (!e.target.dataset.source) {
+    return;
+  }
+  const card = e.target.dataset.source;
+  console.log("cardUrl", card);
+  const span = basicLightbox.create(`
+    <img src="${e.target.dataset.source}" width="100" height="50">
+`);
+  span.show();
+}
 console.log(galleryItems);
-
-// =========================================================================
-const galleryEl = document.querySelector(`div`);
-
-const newLinkImgEl = galleryItems.map((item) => `<a class="gallery__link" href="${item.original}" target="_self">
-
-<img class="gallery__image" src="${item.preview}" data-source="${item.original}" alt="${item.description}"/></a>`).join("")
-
-galleryEl.insertAdjacentHTML(`beforeend`, newLinkImgEl)
-// ======================================================================
